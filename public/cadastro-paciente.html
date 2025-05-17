@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastro de Paciente</title>
+</head>
+<body>
+  <input type="text" id="nome" placeholder="Nome">
+  <input type="text" id="cpf" placeholder="CPF">
+  <input type="text" id="telefone" placeholder="Telefone">
+  <button id="btn-salvar">Salvar</button>
+  <div id="mensagem"></div>
+
+  <script>
+    document.getElementById('btn-salvar').addEventListener('click', () => {
+      document.getElementById('mensagem').textContent = 'Cadastro realizado com sucesso';
+    });
+  </script>
+</body>
+</html>
