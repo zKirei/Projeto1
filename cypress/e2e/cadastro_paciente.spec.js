@@ -11,8 +11,18 @@ describe('Cadastro de Paciente', () => {
 
   it('Deve bloquear CPF inválido', () => {  
     cy.visit('/cadastro-paciente.html');  
+    cy.get('#nome').type('Maria Silva'); // Nome válido
     cy.get('#cpf').type('111.222.333-44'); // CPF inválido  
     cy.get('#btn-salvar').click();  
-    cy.contains('CPF inválido').should('be.visible');  
-  });  
-});  
+    cy.contains('CPF inválido!', { timeout: 3000 }).should('be.visible'); // Com "!"
+  });
+
+  it('Deve bloquear telefone inválido', () => {
+    cy.visit('/cadastro-paciente.html');
+    cy.get('#nome').type('João da Silva'); // Nome válido
+    cy.get('#cpf').type('529.982.247-25'); // CPF válido
+    cy.get('#telefone').type('41'); // Telefone inválido
+    cy.get('#btn-salvar').click();
+    cy.contains('Telefone inválido!', { timeout: 3000 }).should('be.visible');
+  });
+});

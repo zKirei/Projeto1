@@ -71,44 +71,74 @@
             const mensagemDiv = document.getElementById('mensagem');
             mensagemDiv.className = '';
             
-            // Sanitização e validação de entradas
-            const nome = sanitizarEntrada(document.getElementById('nome').value);
-            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
-            const telefone = document.getElementById('telefone').value.replace(/\D/g, '');
+            // Captura dos valores brutos
+            const nomeBruto = document.getElementById('nome').value;
+            const cpfBruto = document.getElementById('cpf').value.replace(/\D/g, '');
+            const telefoneBruto = document.getElementById('telefone').value.replace(/\D/g, '');
 
-            // Validação contra SQL Injection e XSS
-            if (!validarNome(nome)) {
+            // Validação em cascata
+            if (!validarNome(nomeBruto)) {
                 exibirErro('Caractere inválido detectado!');
                 return;
             }
 
-            if (!validarCPF(cpf)) {
+            if (!validarCPF(cpfBruto)) {
                 exibirErro('CPF inválido!');
                 return;
             }
 
-            if (!validarTelefone(telefone)) {
+            if (!validarTelefone(telefoneBruto)) {
                 exibirErro('Telefone inválido!');
                 return;
             }
 
+            // Sanitização após validação
+            const nomeSanitizado = sanitizarEntrada(nomeBruto);
+            
             // Simulação de envio para o backend
-            simularEnvioBackend({ nome, cpf, telefone });
+            simularEnvioBackend({ 
+                nome: nomeSanitizado, 
+                cpf: cpfBruto, 
+                telefone: telefoneBruto 
+            });
         });
 
-        // --- Funções Auxiliares ---
+        // --- Funções de Validação ---
         function validarNome(nome) {
-            return !/(\%27|\'|\-\-|\%23|#|\b(SELECT|INSERT|DELETE|DROP)\b|<script>)/i.test(nome);
+            // Valida padrões maliciosos e formato correto
+            const padraoMalicioso = /(\%27|\'|\-\-|\%23|#|\b(SELECT|INSERT|DELETE|DROP)\b|<script>)/i;
+            const padraoNome = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{5,}$/; // Mínimo 5 caracteres
+            
+            return !padraoMalicioso.test(nome) && padraoNome.test(nome);
         }
 
         function validarTelefone(telefone) {
-            return telefone.length === 11; // DDD + 9 dígitos
+            const dddValidos = ['11', '21', '41']; // DDDS válidos
+            const ddd = telefone.substring(0, 2);
+            return telefone.length === 11 && dddValidos.includes(ddd);
         }
 
+        function validarCPF(cpf) {
+            if (cpf.length !== 11 || /^(.)\1+$/.test(cpf)) return false;
+            
+            // Cálculo dos dígitos verificadores
+            let soma = Array.from({length: 9}, (_, i) => parseInt(cpf[i]) * (10 - i)).reduce((a,b) => a + b);
+            let resto = (soma * 10) % 11;
+            if (resto === 10) resto = 0;
+            if (resto !== parseInt(cpf[9])) return false;
+
+            soma = Array.from({length: 10}, (_, i) => parseInt(cpf[i]) * (11 - i)).reduce((a,b) => a + b);
+            resto = (soma * 10) % 11;
+            return resto === parseInt(cpf[10]);
+        }
+
+        // --- Funções Auxiliares ---
         function sanitizarEntrada(texto) {
             return texto.trim()
                         .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;');
+                        .replace(/>/g, '&gt;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/"/g, '&quot;');
         }
 
         function formatarTelefone(campo) {
@@ -127,7 +157,6 @@
         }
 
         function simularEnvioBackend(dados) {
-            // Simulação de API (substituir por fetch() em um sistema real)
             setTimeout(() => {
                 const mensagemDiv = document.getElementById('mensagem');
                 mensagemDiv.textContent = 'Cadastro realizado com sucesso!';
@@ -138,7 +167,7 @@
 
         function exibirErro(mensagem) {
             const div = document.getElementById('mensagem');
-            div.textContent = mensagem;
+            div.textContent = mensagem; // Exemplo: "CPF inválido!" ou "Telefone inválido!"
             div.classList.add('erro');
         }
 
@@ -146,25 +175,6 @@
             document.getElementById('nome').value = '';
             document.getElementById('cpf').value = '';
             document.getElementById('telefone').value = '';
-        }
-
-        function validarCPF(cpf) {
-            cpf = cpf.replace(/\D/g, '');
-            if (
-                cpf.length !== 11 ||
-                /^(.)\1+$/.test(cpf) // CPFs com todos dígitos iguais
-            ) return false;
-
-            let soma = 0;
-            for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
-            let resto = (soma * 10) % 11;
-            if (resto === 10 || resto === 11) resto = 0;
-            if (resto !== parseInt(cpf.charAt(9))) return false;
-
-            soma = 0;
-            for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
-            resto = (soma * 10) % 11;
-            return resto === parseInt(cpf.charAt(10));
         }
     </script>
 </body>
