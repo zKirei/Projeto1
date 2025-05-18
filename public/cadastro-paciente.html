@@ -1,19 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Cadastro de Paciente</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Paciente - SGHSS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+        #mensagem {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .sucesso {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .erro {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
 </head>
 <body>
-  <input type="text" id="nome" placeholder="Nome">
-  <input type="text" id="cpf" placeholder="CPF">
-  <input type="text" id="telefone" placeholder="Telefone">
-  <button id="btn-salvar">Salvar</button>
-  <div id="mensagem"></div>
+    <h1>Cadastro de Paciente</h1>
+    
+    <div class="form-group">
+        <input type="text" id="nome" placeholder="Nome completo" required
+               aria-label="Campo para nome completo">
+    </div>
+    
+    <div class="form-group">
+        <input type="text" id="cpf" placeholder="CPF (somente números)" maxlength="14" 
+               oninput="formatarCPF(this)"
+               aria-label="Campo para CPF">
+    </div>
+    
+    <div class="form-group">
+        <input type="tel" id="telefone" placeholder="Telefone (DD) 9XXXX-XXXX" 
+               oninput="formatarTelefone(this)"
+               aria-label="Campo para telefone">
+    </div>
+    
+    <button id="btn-salvar">Salvar Cadastro</button>
+    <div id="mensagem" role="alert"></div>
 
-  <script>
-    document.getElementById('btn-salvar').addEventListener('click', () => {
-      document.getElementById('mensagem').textContent = 'Cadastro realizado com sucesso';
-    });
-  </script>
+    <script>
+        document.getElementById('btn-salvar').addEventListener('click', (e) => {
+            e.preventDefault();
+            const mensagemDiv = document.getElementById('mensagem');
+            mensagemDiv.className = '';
+            
+            // Sanitização e validação de entradas
+            const nome = sanitizarEntrada(document.getElementById('nome').value);
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            const telefone = document.getElementById('telefone').value.replace(/\D/g, '');
+
+            // Validação contra SQL Injection e XSS
+            if (!validarNome(nome)) {
+                exibirErro('Caractere inválido detectado!');
+                return;
+            }
+
+            if (!validarCPF(cpf)) {
+                exibirErro('CPF inválido!');
+                return;
+            }
+
+            if (!validarTelefone(telefone)) {
+                exibirErro('Telefone inválido!');
+                return;
+            }
+
+            // Simulação de envio para o backend
+            simularEnvioBackend({ nome, cpf, telefone });
+        });
+
+        // --- Funções Auxiliares ---
+        function validarNome(nome) {
+            return !/(\%27|\'|\-\-|\%23|#|\b(SELECT|INSERT|DELETE|DROP)\b|<script>)/i.test(nome);
+        }
+
+        function validarTelefone(telefone) {
+            return telefone.length === 11; // DDD + 9 dígitos
+        }
+
+        function sanitizarEntrada(texto) {
+            return texto.trim()
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+        }
+
+        function formatarTelefone(campo) {
+            let valor = campo.value.replace(/\D/g, '');
+            if (valor.length > 2) valor = `(${valor.substring(0,2)}) ${valor.substring(2)}`;
+            if (valor.length > 10) valor = `${valor.substring(0,10)}-${valor.substring(10,15)}`;
+            campo.value = valor.substring(0, 15);
+        }
+
+        function formatarCPF(campo) {
+            let valor = campo.value.replace(/\D/g, '');
+            if (valor.length > 3) valor = valor.replace(/^(\d{3})(\d)/, '$1.$2');
+            if (valor.length > 6) valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            if (valor.length > 9) valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            campo.value = valor;
+        }
+
+        function simularEnvioBackend(dados) {
+            // Simulação de API (substituir por fetch() em um sistema real)
+            setTimeout(() => {
+                const mensagemDiv = document.getElementById('mensagem');
+                mensagemDiv.textContent = 'Cadastro realizado com sucesso!';
+                mensagemDiv.classList.add('sucesso');
+                limparCampos();
+            }, 1000);
+        }
+
+        function exibirErro(mensagem) {
+            const div = document.getElementById('mensagem');
+            div.textContent = mensagem;
+            div.classList.add('erro');
+        }
+
+        function limparCampos() {
+            document.getElementById('nome').value = '';
+            document.getElementById('cpf').value = '';
+            document.getElementById('telefone').value = '';
+        }
+
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/\D/g, '');
+            if (
+                cpf.length !== 11 ||
+                /^(.)\1+$/.test(cpf) // CPFs com todos dígitos iguais
+            ) return false;
+
+            let soma = 0;
+            for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
+            let resto = (soma * 10) % 11;
+            if (resto === 10 || resto === 11) resto = 0;
+            if (resto !== parseInt(cpf.charAt(9))) return false;
+
+            soma = 0;
+            for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
+            resto = (soma * 10) % 11;
+            return resto === parseInt(cpf.charAt(10));
+        }
+    </script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 describe('Teste de Segurança', () => {  
   it('Deve bloquear SQL Injection no campo Nome', () => {  
-    cy.visit('/cadastro-paciente');  
+    cy.visit('/cadastro-paciente.html');  
     cy.get('#nome').type("Maria'; DROP TABLE pacientes; --");  
-    cy.get('#btn-cadastrar').click();  
-    cy.contains('Caractere inválido detectado').should('be.visible');  
+    cy.get('#btn-salvar').click();  
+    cy.get('#mensagem').should('contain', 'Caractere inválido detectado');  
   });  
-});  
+});
