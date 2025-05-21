@@ -14,7 +14,7 @@ it('Deve bloquear CPF inválido', () => {
   cy.get('#nome').type('Maria Silva'); // Nome válido
   cy.get('#cpf').type('111.222.333-44'); // CPF inválido  
   cy.get('#btn-salvar').click();  
-  cy.contains('CPF inválido!', { timeout: 3000 }).should('be.visible'); // Com "!"
+  cy.contains('CPF inválido!', { timeout: 3000 }).should('be.visible');
 });
 
 it('Deve bloquear telefone inválido', () => {

@@ -1,0 +1,27 @@
+# Dependências
+node_modules/
+
+# Arquivos de ambiente
+.env
+.env.local
+
+# Logs e relatórios
+logs/
+*.log
+cypress/screenshots/
+cypress/videos/
+jmeter-plans/results/
+
+# Arquivos do sistema e IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Cache e temporários
+.tmp/
+*.tmp
+
+# Outros
+coverage/
+*.jks
+*.pem
