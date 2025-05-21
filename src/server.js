@@ -1,6 +1,15 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
+const crypto = require('crypto');
+
+function hashCPF(cpf) {
+  const cpfLimpo = cpf.replace(/\D/g, '');
+  return crypto
+    .createHash('sha256')
+    .update(cpfLimpo)
+    .digest('hex');
+}
 
 // ===========================================
 // Configuração Avançada do Helmet
@@ -68,7 +77,21 @@ app.get('/', (req, res) => {
 });
 
 app.post('/pacientes', (req, res) => {
-  console.log('Dados recebidos:', req.body);
+  const dados = req.body;
+
+  // 👇 Validação do CPF antes de criar hash
+  const cpfLimpo = dados.cpf.replace(/\D/g, '');
+  if (cpfLimpo.length !== 11) {
+    return res.status(400).json({ erro: 'CPF inválido' });
+  }
+
+  // 👇 Aplica a criptografia ao CPF
+  const pacienteCriptografado = {
+    ...dados,
+    cpf: hashCPF(dados.cpf) // Substitui o CPF pelo hash
+  };
+
+  console.log('Paciente criptografado:', pacienteCriptografado);
   res.status(201).json({ mensagem: 'Cadastro realizado com sucesso!' });
 });
 

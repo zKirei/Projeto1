@@ -1,6 +1,5 @@
-// cypress/e2e/api.spec.js
 
- it('Deve retornar 201 ao cadastrar paciente válido', () => {
+it('Deve retornar 201 ao cadastrar paciente válido', () => {
     cy.request({
       method: 'POST',
       url: 'http://localhost:3000/pacientes',
