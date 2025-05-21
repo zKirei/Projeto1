@@ -10,7 +10,7 @@ logs/
 *.log
 cypress/screenshots/
 cypress/videos/
-jmeter-plans/results/
+reports/
 
 # Arquivos do sistema e IDE
 .DS_Store
