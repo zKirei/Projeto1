@@ -29,15 +29,15 @@
         </ConfigTestElement>
         <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Configuração dos dados CSV">
-          <stringProp name="delimiter">,</stringProp>
+          <stringProp name="delimiter">;</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">jmeter-plans/dados_pacientes.csv</stringProp>
+          <stringProp name="filename">C:/Users/Vitor/Desktop/Faculdade/Projeto_novo/jmeter-plans/dados_pacientes.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="stopThread">false</boolProp>
-          <stringProp name="variableNames">nome,cpf,telefone</stringProp>
+          <stringProp name="variableNames">nome;cpf;telefone</stringProp>
         </CSVDataSet>
         <hashTree/>
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
@@ -79,11 +79,11 @@
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion (2000 ms)">
+          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion (2000 ms)" enabled="true">
             <stringProp name="DurationAssertion.duration">2000</stringProp>
           </DurationAssertion>
           <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion (Código 201)">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion (Código 201)" enabled="true">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="49587">201</stringProp>
             </collectionProp>
@@ -93,7 +93,7 @@
             <intProp name="Assertion.test_type">2</intProp>
           </ResponseAssertion>
           <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion (Mensagem de sucesso)">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion (Mensagem de sucesso)" enabled="true">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="-2143901729">Cadastro realizado com sucesso!</stringProp>
               <stringProp name="-2143901716">Cadastro realizado com sucesso.</stringProp>
