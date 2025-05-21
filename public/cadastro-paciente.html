@@ -40,6 +40,22 @@
             background-color: #f2dede;
             color: #a94442;
         }
+        /* Estilo do Modal */
+        #modal-politica {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 90%;
+            max-width: 500px;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +83,20 @@
                oninput="formatarTelefone(this)"
                aria-label="Campo para telefone">
     </div>
+
+    <div class="form-group">
+        <label>
+            <input type="checkbox" id="consentimento" required>
+            Concordo com a <a href="#politica" onclick="abrirPolitica()">Política de Privacidade</a>.
+        </label>
+    </div>
+
+    <!-- Modal de Política de Privacidade -->
+    <div id="modal-politica">
+        <h3>Política de Privacidade</h3>
+        <p>Seus dados são armazenados de forma segura e usados apenas para fins médicos.</p>
+        <button onclick="fecharModal()">Fechar</button>
+    </div>
     
     <button id="btn-salvar">Salvar Cadastro</button>
     <div id="mensagem" role="alert"></div>
@@ -77,6 +107,12 @@
             const mensagemDiv = document.getElementById('mensagem');
             mensagemDiv.className = '';
             
+            // Validação do checkbox de consentimento
+            if (!document.getElementById('consentimento').checked) {
+                exibirErro('Você deve aceitar a Política de Privacidade!');
+                return;
+            }
+
             // Captura dos valores brutos
             const nomeBruto = document.getElementById('nome').value.trim();
             const cpfBruto = document.getElementById('cpf').value.replace(/\D/g, '');
@@ -117,18 +153,13 @@
 
         // --- Funções de Validação ---
         function validarNome(nome) {            
-            // Permitir campo vazio (já validado anteriormente)
-            if (nome === '') return true;
-            
-            // Valida padrões maliciosos e formato correto
             const padraoMalicioso = /(\%27|\'|\-\-|\%23|#|\b(SELECT|INSERT|DELETE|DROP)\b|<script>)/i;
-            const padraoNome = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{5,}$/; // Mínimo 5 caracteres
-            
+            const padraoNome = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{5,}$/;
             return !padraoMalicioso.test(nome) && padraoNome.test(nome);
         }
 
         function validarTelefone(telefone) {
-            const dddValidos = ['11', '21', '41']; // DDDS válidos
+            const dddValidos = ['11', '21', '41'];
             const ddd = telefone.substring(0, 2);
             return telefone.length === 11 && dddValidos.includes(ddd);
         }
@@ -136,7 +167,6 @@
         function validarCPF(cpf) {
             if (cpf.length !== 11 || /^(.)\1+$/.test(cpf)) return false;
             
-            // Cálculo dos dígitos verificadores
             let soma = Array.from({length: 9}, (_, i) => parseInt(cpf[i]) * (10 - i)).reduce((a,b) => a + b);
             let resto = (soma * 10) % 11;
             if (resto === 10) resto = 0;
@@ -182,7 +212,7 @@
 
         function exibirErro(mensagem) {
             const div = document.getElementById('mensagem');
-            div.textContent = mensagem; // Exemplo: "CPF inválido!" ou "Telefone inválido!"
+            div.textContent = mensagem;
             div.classList.add('erro');
         }
 
@@ -190,6 +220,16 @@
             document.getElementById('nome').value = '';
             document.getElementById('cpf').value = '';
             document.getElementById('telefone').value = '';
+            document.getElementById('consentimento').checked = false;
+        }
+
+        // --- Funções do Modal ---
+        function abrirPolitica() {
+            document.getElementById('modal-politica').style.display = 'block';
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-politica').style.display = 'none';
         }
     </script>
 </body>

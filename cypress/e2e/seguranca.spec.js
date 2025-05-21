@@ -8,7 +8,8 @@ describe('Testes de Segurança', () => {
   });
 
   it('Deve bloquear SQL Injection no campo Nome', () => {  
-    cy.get('#nome').type("Maria'; DROP TABLE pacientes; --"); // Payload malicioso
+    cy.get('#nome').type("Maria'; DROP TABLE pacientes; --");
+    cy.get('#consentimento').check(); // Payload malicioso
     cy.get('#btn-salvar').click();
     
     // Verifica mensagem de segurança
@@ -19,6 +20,7 @@ describe('Testes de Segurança', () => {
 
   it('Deve bloquear XSS no campo Nome', () => {
     cy.get('#nome').type('<script>alert("XSS")</script>'); // Payload XSS
+    cy.get('#consentimento').check();
     cy.get('#btn-salvar').click();
     
     cy.get('#mensagem')
