@@ -2,14 +2,15 @@
   "name": "sghss",
   "version": "1.0.0",
   "scripts": {
-    "test": "cypress open",
-    "start": "live-server --port=3000 --mount=/:public"
+    "test": "cypress open",                 
+    "test:ci": "cypress run",               
+    "start": "node src/server.js",           
+    "load-test": "jmeter -n -t jmeter-plans/teste-carga.jmx" 
   },
   "devDependencies": {
-    "cypress": "^14.3.3",
-    "live-server": "^1.2.2"
+    "cypress": "^14.3.3"                 
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0"              
   }
 }
