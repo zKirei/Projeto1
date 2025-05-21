@@ -8,12 +8,12 @@
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Simulação de 1000 usuários">
-        <intProp name="ThreadGroup.num_threads">100</intProp>
-        <intProp name="ThreadGroup.ramp_time">10</intProp>
+        <intProp name="ThreadGroup.num_threads">500</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">startnextloop</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Controlador de Iteração">
-          <stringProp name="LoopController.loops">10</stringProp>
+          <stringProp name="LoopController.loops">20</stringProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
       </ThreadGroup>
@@ -31,7 +31,7 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Configuração dos dados CSV">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">C:/Users/Vitor/Desktop/Faculdade/SGHSS/jmeter-plans/dados-pacientes.csv</stringProp>
+          <stringProp name="filename">dados-pacientes.csv  </stringProp>
           <boolProp name="ignoreFirstLine">true</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
@@ -96,7 +96,6 @@
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion (Mensagem de sucesso)">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="-2143901729">Cadastro realizado com sucesso!</stringProp>
-              <stringProp name="-2143901716">Cadastro realizado com sucesso.</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>

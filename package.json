@@ -2,15 +2,16 @@
   "name": "sghss",
   "version": "1.0.0",
   "scripts": {
-    "test": "cypress open",                 
-    "test:ci": "cypress run",               
-    "start": "node src/server.js",           
-    "load-test": "jmeter -n -t jmeter-plans/teste-carga.jmx" 
+    "test": "cypress open",
+    "test:ci": "cypress run",
+    "start": "node src/server.js",
+    "load-test": "jmeter -n -t jmeter-plans/teste-carga.jmx"
   },
   "devDependencies": {
-    "cypress": "^14.3.3"                 
+    "cypress": "^14.3.3"
   },
   "dependencies": {
-    "express": "^5.1.0"              
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
   }
 }

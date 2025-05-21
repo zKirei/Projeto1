@@ -46,8 +46,14 @@
     <h1>Cadastro de Paciente</h1>
     
     <div class="form-group">
-        <input type="text" id="nome" placeholder="Nome completo" required
-               aria-label="Campo para nome completo">
+        <label for="nome">Nome completo*</label>
+        <input
+            type="text"
+            id="nome"
+            placeholder="Nome completo"
+            required
+            aria-label="Campo obrigatório para nome completo"
+        >
     </div>
     
     <div class="form-group">
@@ -72,11 +78,17 @@
             mensagemDiv.className = '';
             
             // Captura dos valores brutos
-            const nomeBruto = document.getElementById('nome').value;
+            const nomeBruto = document.getElementById('nome').value.trim();
             const cpfBruto = document.getElementById('cpf').value.replace(/\D/g, '');
             const telefoneBruto = document.getElementById('telefone').value.replace(/\D/g, '');
 
-            // Validação em cascata
+            // 1º: Campo obrigatório
+            if (nomeBruto === '') {
+                exibirErro('Campo nome é obrigatório!');
+                return;
+            }
+
+            // 2º: Segurança (padrões maliciosos)
             if (!validarNome(nomeBruto)) {
                 exibirErro('Caractere inválido detectado!');
                 return;
@@ -104,7 +116,10 @@
         });
 
         // --- Funções de Validação ---
-        function validarNome(nome) {
+        function validarNome(nome) {            
+            // Permitir campo vazio (já validado anteriormente)
+            if (nome === '') return true;
+            
             // Valida padrões maliciosos e formato correto
             const padraoMalicioso = /(\%27|\'|\-\-|\%23|#|\b(SELECT|INSERT|DELETE|DROP)\b|<script>)/i;
             const padraoNome = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{5,}$/; // Mínimo 5 caracteres
