@@ -1,13 +1,13 @@
 # SGHSS - Sistema de Gestão Hospitalar e de Serviços de Saúde
 
-Projeto de Qualidade de Software para validação do sistema SGHSS, com foco em testes funcionais, de segurança e desempenho.
+Projeto de Qualidade de Software para fins educacionais, com foco em testes funcionais, de segurança e desempenho.
 
 ## 🚀 Como Executar
 
 ### Pré-requisitos
-- Node.js v18+
-- Java 11+ (para JMeter)
-- JMeter 5.6+
+- Node.js
+- Java(para JMeter)
+- JMeter
 
 ### Instalação
 ```bash
@@ -24,7 +24,7 @@ npm install
 
 ## 📂 Estrutura do Projeto
 ```
-zkirei-sghss/
+zKirei-SGHSS/
 ├── cypress/               # Testes E2E com Cypress
 ├── jmeter-plans/          # Planos de teste de carga
 ├── public/                # Front-end estático
@@ -46,12 +46,4 @@ zkirei-sghss/
 
 ### Segurança
 - Headers de proteção (Helmet)
-- Sanitização de entradas no front-end
-
-## 📄 Documentação
-- Em desenvolvimento
-- 
-
-
-## 📝 Licença
-Este projeto é para fins educacionais (UNINTER). 
+- Sanitização de entradas
