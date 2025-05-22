@@ -10,7 +10,6 @@ logs/
 *.log
 cypress/screenshots/
 cypress/videos/
-reports/
 
 # Arquivos do sistema e IDE
 .DS_Store
