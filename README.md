@@ -5,9 +5,10 @@ Projeto de Qualidade de Software para fins educacionais, com foco em testes func
 ## 🚀 Como Executar
 
 ### Pré-requisitos
-- Node.js
-- Java(para JMeter)
-- JMeter
+- Node.js (https://nodejs.org/)
+- JMeter (https://jmeter.apache.org/)
+- Cypress (https://cypress.io)
+- Java (JDK) (https://oracle.com/java/)
 
 ### Instalação
 ```bash
@@ -28,8 +29,11 @@ zKirei-SGHSS/
 ├── cypress/               # Testes E2E com Cypress
 ├── jmeter-plans/          # Planos de teste de carga
 ├── public/                # Front-end estático
+├── relatórios/            # Relatórios JMeter e OWASP ZAP
 ├── src/                   # Back-end (Express.js)
+├──.gitignore              
 ├── cypress.config.js
+├── package-lock.json
 ├── package.json
 └── README.md
 ```
