@@ -91,7 +91,6 @@
         </label>
     </div>
 
-    <!-- Modal de Política de Privacidade -->
     <div id="modal-politica">
         <h3>Política de Privacidade</h3>
         <p>Seus dados são armazenados de forma segura e usados apenas para fins médicos.</p>
@@ -164,14 +163,15 @@
             return telefone.length === 11 && dddValidos.includes(ddd);
         }
 
+        // Função de validação de CPF usando algoritmo oficial
         function validarCPF(cpf) {
             if (cpf.length !== 11 || /^(.)\1+$/.test(cpf)) return false;
-            
+            // Cálculo do primeiro dígito verificador
             let soma = Array.from({length: 9}, (_, i) => parseInt(cpf[i]) * (10 - i)).reduce((a,b) => a + b);
             let resto = (soma * 10) % 11;
             if (resto === 10) resto = 0;
             if (resto !== parseInt(cpf[9])) return false;
-
+            // Cálculo do segundo dígito verificador
             soma = Array.from({length: 10}, (_, i) => parseInt(cpf[i]) * (11 - i)).reduce((a,b) => a + b);
             resto = (soma * 10) % 11;
             return resto === parseInt(cpf[10]);
@@ -179,8 +179,9 @@
 
         // --- Funções Auxiliares ---
         function sanitizarEntrada(texto) {
+            // Sanitização para prevenir XSS
             return texto.trim()
-                        .replace(/</g, '&lt;')
+                        .replace(/</g, '&lt;') // Substitui caracteres perigosos
                         .replace(/>/g, '&gt;')
                         .replace(/'/g, '&#39;')
                         .replace(/"/g, '&quot;');

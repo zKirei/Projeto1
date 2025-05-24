@@ -1,5 +1,5 @@
- 
-it('Deve cadastrar paciente com dados válidos', () => {  
+ it('Deve cadastrar paciente com dados válidos', () => {  
+  // Teste de caso de sucesso: Valida o fluxo completo de cadastro
   cy.visit('/cadastro-paciente.html'); 
   cy.get('#nome').type('João da Silva');  
   cy.get('#cpf').type('529.982.247-25');  
@@ -12,7 +12,7 @@ it('Deve cadastrar paciente com dados válidos', () => {
 
 it('Deve bloquear CPF inválido', () => {  
   cy.visit('/cadastro-paciente.html');  
-  cy.get('#nome').type('Maria Silva'); // Nome válido
+  cy.get('#nome').type('Maria Silva');
   cy.get('#cpf').type('111.222.333-44'); // CPF inválido
   cy.get('#consentimento').check();
   cy.get('#btn-salvar').click();  
@@ -21,8 +21,8 @@ it('Deve bloquear CPF inválido', () => {
 
 it('Deve bloquear telefone inválido', () => {
   cy.visit('/cadastro-paciente.html');
-  cy.get('#nome').type('João da Silva'); // Nome válido
-  cy.get('#cpf').type('529.982.247-25'); // CPF válido
+  cy.get('#nome').type('João da Silva');
+  cy.get('#cpf').type('529.982.247-25');
   cy.get('#telefone').type('41'); // Telefone inválido
   cy.get('#consentimento').check();
   cy.get('#btn-salvar').click();
@@ -53,7 +53,6 @@ it('Deve ter labels acessíveis', () => {
 
 it('Deve exibir erro se o checkbox de privacidade não for marcado', () => {
   cy.visit('/cadastro-paciente.html');
-  
   // Preenche campos válidos, mas NÃO marca o checkbox
   cy.get('#nome').type('Carlos Oliveira');
   cy.get('#cpf').type('529.982.247-25');

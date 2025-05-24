@@ -1,4 +1,3 @@
-
 it('Deve retornar 201 ao cadastrar paciente válido', () => {
     cy.request({
       method: 'POST',

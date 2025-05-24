@@ -11,9 +11,8 @@ function hashCPF(cpf) {
     .digest('hex');
 }
 
-// ===========================================
+
 // Configuração Avançada do Helmet
-// ===========================================
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -42,9 +41,8 @@ app.use(helmet({
   xPoweredBy: false
 }));
 
-// ===========================================
+
 // Middleware Adicional para Headers
-// ===========================================
 app.use((req, res, next) => {
   // Garantir remoção total do X-Powered-By
   res.removeHeader('X-Powered-By');
@@ -56,9 +54,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// ===========================================
+
 // Rotas para Mitigar Falsos Positivos
-// ===========================================
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain').send('User-agent: *\nDisallow: /');
 });
@@ -67,9 +64,8 @@ app.get('/sitemap.xml', (req, res) => {
   res.type('application/xml').send('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n</urlset>');
 });
 
-// ===========================================
+
 // Rotas e Configurações do Servidor
-// ===========================================
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -79,13 +75,13 @@ app.get('/', (req, res) => {
 app.post('/pacientes', (req, res) => {
   const dados = req.body;
 
-  // 👇 Validação do CPF antes de criar hash
+  // Validação do CPF antes de criar hash
   const cpfLimpo = dados.cpf.replace(/\D/g, '');
   if (cpfLimpo.length !== 11) {
     return res.status(400).json({ erro: 'CPF inválido' });
   }
 
-  // 👇 Aplica a criptografia ao CPF
+  // Aplica a criptografia ao CPF
   const pacienteCriptografado = {
     ...dados,
     cpf: hashCPF(dados.cpf) // Substitui o CPF pelo hash
